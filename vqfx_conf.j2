@@ -1,0 +1,43 @@
+system {
+    login {
+        user gilbert {
+            uid 2001;
+            class super-user;
+            authentication {
+                ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXImEgOke+zLWtszIPjWP8n/IyWoRTODgvMj5vBsGr0BPHGkpj/VYHIp8xbGZVWJHvqOgXldBVYU05GIBBtKy+9shKzOqZIStKW6uLqOOM2ZPvqVOfr1iQ17+S3S4Tj89uwioGLAIQ6j5/l1T5BVmxvSOi50lj/yxG4U8mn9U03vybqDKi0hTLRbGqWqBSWkmQV6jilOij+u3rSO8LYfmoSWpei1cHFARk0cg7FEE3zd8X5+/Lze5O9RQRpcZyMLr0cElH1bQYeoxyG5KAm/UJZ17mpWluETnG2G2ZyWEqjX2UsU0O7GdMngjB10/hoUe+rll8xSbVmr3Rtm7Tpci3 gmoisio@MBP-de-Gilbert.lan"; ## SECRET-DATA
+            }
+        }
+     }
+    root-authentication {
+        encrypted-password "$6$nYvUQ3KH$vKBzu9zTDpRXKT.SpQwvLhjeXWnCwRekTqdOy1ncb0//ielRB1PHnhjap8FVCg9f1WrLJsvYgNfpz5VaxaHTI1"; ## SECRET-DATA
+        ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key"; ## SECRET-DATA
+    }
+    services {
+        ssh {
+            root-login allow;
+        }
+        netconf {
+            ssh;
+        }
+    }
+    host-name {{ system.hostname }};
+}
+interfaces {
+{% for interface in interfaces %}
+     {{ interface.name}} {
+        description "to {{ interface.description }}";
+        unit 0 {
+            family inet {
+                address {{ interface.ip }};
+            }
+        }
+    }
+{% endfor %}
+}
+vlans {
+{% for vlan in vlans %}
+    {{ vlan.name }} {
+        vlan-id {{ vlan.id }};
+    }
+{% endfor %}
+}

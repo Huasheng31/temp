@@ -1,0 +1,21 @@
+system:
+  hostname: vqfx01
+
+interfaces:
+  - name: em3
+    description: vQFX02
+    ip: 192.168.31.1/24
+
+vlans:
+  - name: test1
+    id: 10
+  - name: test2
+    id: 20
+  - name: test3
+    id: 30
+  - name: test4
+    id: 40
+  - name: test5
+    id: 50
+  - name: test6
+    id: 60

@@ -1,0 +1,18 @@
+# This task first configure all devices from Vagrant
+- name: Generate and Deploy Configuration from Vagrant
+  hosts: vqfx10k
+  connection: local
+  gather_facts: no
+  roles:
+    - Juniper.junos
+  tasks:
+    - name: Build configuration
+      template: src=vqfx_conf.j2 dest=/tmp/{{ inventory_hostname }}.conf
+    - name: Deploy config to device ... please wait
+      juniper_junos_config:
+        load: 'merge'
+        src: "/tmp/{{ inventory_hostname }}.conf"
+        host: "{{ ansible_ssh_host }}"
+        port: "{{ ansible_ssh_port }}"
+        format: text
+        logfile: /tmp/changes.log
